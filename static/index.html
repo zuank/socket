@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue@2.2.1/dist/vue.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app" class="center-block">
+    <div class="input-group" v-if='nickname===""'>
+      <input type="text" class="form-control" placeholder="输入昵称" v-model='username'>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" @click='setNickName'>确定</button>
+      </span>
+    </div>
+    <div v-else class="content">
+      <div class="dialoglist">
+        <template  v-for='(item, index) in messagelist'>
+          <p v-if='item.type==="user"'>欢迎{{item.nickname}}加入房间</p>      
+          <p v-else>{{item.nickname}}:{{item.value}}</p>  
+        </template>
+      </div>
+      <div class="input-group dialog">
+        <input type="text" class="form-control" placeholder="输入昵称" v-model='dialog'>
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button" @click='addDialog'>确定</button>
+      </span>
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  var socket = io.connect('/')
+  var app = new Vue({
+    el: '#app',
+    data: {
+      username: '',
+      nickname: '',
+      dialog: '',
+      messagelist: []
+    },
+    methods: {
+      setNickName: function () {
+        socket.emit('set nickname', this.username)
+      },
+      addDialog: function () {
+        socket.emit('new dialog', this.dialog)
+      }
+    }
+  })
+  socket.on('new user', function (data) {
+    console.log(data)
+    app.messagelist.push(data)
+  })
+  socket.on('login', function (data) {
+    console.log(data)
+    app.nickname = data.nickname
+  })
+  socket.on('new dialog', function (data) {
+    console.log(data)
+    app.messagelist.push(data)
+  })
+
+</script>
+
+</html>

@@ -1,0 +1,16 @@
+.content{
+    margin: 5px;
+    width: 400px;
+    height: 600px;
+    position: relative;
+    border: 1px solid #dddddd;
+    box-shadow: 0px 0px 4px #000000
+}
+.dialoglist {
+    overflow: auto;
+    height: 564px;
+}
+.dialog {
+    position: absolute !important;
+    bottom: 0px;
+}
