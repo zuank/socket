@@ -58,9 +58,11 @@
       },
       methods: {
         setNickName: function() {
+          if (!this.username.trim()) return
           socket.emit('set nickname', this.username)
         },
         addDialog: function() {
+          if (!this.dialog.trim()) return
           socket.emit('new dialog', this.dialog)
           this.dialog = ''
         }
