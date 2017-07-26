@@ -58,7 +58,9 @@
       },
       watch: {
         messagelist: function() {
-          document.getElementById('messagelist').scrollTop = document.getElementById('messagelist').scrollHeight
+          this.$nextTick(function() {
+            document.getElementById('messagelist').scrollTop = document.getElementById('messagelist').scrollHeight
+          })
         }
       },
       methods: {
