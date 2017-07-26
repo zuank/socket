@@ -12,15 +12,12 @@ const server = app.listen(port, () => {
 const io = require('socket.io').listen(server);
 
 io.sockets.on('connection', (socket) => {
-  console.log(1)
   socket.on('set nickname', (name) => {
-    console.log(2)
     socket.nickname = name;
     socket.broadcast.emit('new user', {
       nickname: name,
       type: 'user',
     });
-    console.log(3)
     socket.emit('login', {
       nickname: name,
       id: socket.id,

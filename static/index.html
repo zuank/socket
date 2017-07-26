@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="card-action" v-else>
-          <div class="dialoglist">
+          <div class="dialoglist" id="messagelist">
             <template v-for='(item, index) in messagelist'>
               <p v-if='item.type==="user"'>欢迎{{item.nickname}}加入房间</p>
               <p v-else-if='item.nickname!==nickname' style="text-align:left">{{item.nickname}}:{{item.value}}</p>
@@ -55,6 +55,11 @@
         nickname: '',
         dialog: '',
         messagelist: []
+      },
+      watch: {
+        messagelist: function() {
+          document.getElementById('messagelist').scrollTop = document.getElementById('messagelist').scrollHeight
+        }
       },
       methods: {
         setNickName: function() {
