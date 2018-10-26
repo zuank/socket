@@ -87,6 +87,9 @@
       console.log(data)
       app.messagelist.push(data)
     })
+    socket.on('need login', function() {
+        app.nickname = ''
+    })
 
   </script>
 
